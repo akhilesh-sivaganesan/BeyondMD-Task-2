@@ -1,11 +1,11 @@
 import './App.css';
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import axios from 'axios';
 import React, { useState, useEffect } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -21,21 +21,21 @@ import Paper from '@mui/material/Paper';
 const App = () => {
   const [view, setView] = useState(false);
   const [medicalRecordList, setMedicalRecordList] = useState([]);
-  const [medicalRecordCount, setMedicalRecordCount] = useState(20);
 
   const handleView = () => {
     setView(!view);
   };
   
-  //const axios = require("axios");
-
+  /*
+  To prevent infinite render cycle
+  To prevent infinite API calls if not using useEffect
+  */
   useEffect(() => {
     const options = {
       method: 'GET',
       url: 'https://diagnosis.p.rapidapi.com/api/DDxItems/GetSymptoms',
       params: {AuthenticationID: 'DEMO_AuthenticationID'},
       headers: {
-        //'X-RapidAPI-Key': '92994eff54mshe6dc13d4b587db3p1201dajsn612ea6fb83bb',
         'X-RapidAPI-Key': process.env.REACT_APP_API_KEY,
         'X-RapidAPI-Host': 'diagnosis.p.rapidapi.com'
       }
@@ -74,9 +74,11 @@ const App = () => {
           <Typography variant="h2" component="h2">
             Data from Diagnosis API
           </Typography>
+          <br></br>
           <Typography variant="subtitle1">
             <a href="https://rapidapi.com/rustemsoft/api/diagnosis/" target="_blank">View the Diagnosis API from RapidAPI</a>
           </Typography>
+          <br></br>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
@@ -109,6 +111,5 @@ const App = () => {
       
   );
 };
-
 
 export default App;
